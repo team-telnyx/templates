@@ -49,7 +49,7 @@ TELNYX_PUBLIC_KEY=
 TENYX_APP_PORT=8000
 ```
 
-### Callback URLs For Telnyx Call Control Applications
+### Callback URLs For Telnyx Applications
 
 | Callback Type                    | URL                                        |
 |:---------------------------------|:-------------------------------------------|
