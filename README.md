@@ -1,2 +1,3 @@
 # templates
-templates
+
+Templates for all
