@@ -6,7 +6,9 @@
 
 ## Introduction
 
-> Add a 2-3 sentence paragraph describing the product & the product feature that the tutorial is showing off.  Example below
+> Add a 2-3 sentence paragraph describing the product & the product feature that the tutorial is showing off.
+
+>  Example below⚠️ Be sure to update for your tutorial
 
 ```
 The [Call Control framework](/docs/api/v2/call-control) is a set of APIs that allow complete control of a call flow from the moment a call begins to the moment it is completed. In between, you will receive a number of [webhooks](/docs/v2/call-control/receiving-webhooks) for each step of the call, allowing you to act on these events and send commands using the Telnyx Library. A subset of the operations available in the Call Control API is the [Call Control Conference](/docs/api/v2/call-control/Conference-Commands) API. This allows the user (you) to create and manage a conference programmatically upon receiving an incoming call, or when initiating an outgoing call.
@@ -90,7 +92,7 @@ This will create `composer.json` file with the packages needed to run the applic
 > * Java -> https://github.com/cdimascio/java-dotenv
 > * C# -> https://github.com/bolorundurowb/dotenv.net
 
-This tutorial uses the excellent [phpenv](https://github.com/vlucas/phpdotenv) package to manage environment variables.
+This tutorial uses the excellent **link to whichever package** package to manage environment variables.
 
 Create a `.env` file in your root directory to contain your API & Public key. **BE CAREFUL TO NOT SHARE YOUR KEYS WITH ANYONE** Recommended to add `.env` to your `.gitignore` file.
 
