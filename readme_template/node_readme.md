@@ -53,9 +53,9 @@ TENYX_APP_PORT=8000
 
 | Callback Type                    | URL                                        |
 |:---------------------------------|:-------------------------------------------|
-| Inbound Voice Callback           | `{ngrok-url}/Callbacks/Voice/Inbound`      |
-| Inbound Message Callback         | `{ngrok-url}/Callbacks/Messaging/Inbound`  |
-| Outbound Message Status Callback | `{ngrok-url}/Callbacks/Messaging/Outbound` |
+| Inbound Voice Callback           | `{ngrok-url}/callbacks/voice/inbound`      |
+| Inbound Message Callback         | `{ngrok-url}/callbacks/messaging/inbound`  |
+| Outbound Message Status Callback | `{ngrok-url}/callbacks/messaging/outbound` |
 
 ### Install
 
