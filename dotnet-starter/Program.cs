@@ -20,7 +20,6 @@ namespace dotnet_starter
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    string TELNYX_APP_PORT = System.Environment.GetEnvironmentVariable("TELNYX_APP_PORT");
                     webBuilder.UseStartup<Startup>();
                 });
     }
