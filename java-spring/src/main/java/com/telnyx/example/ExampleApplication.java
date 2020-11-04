@@ -6,11 +6,13 @@ import com.telnyx.sdk.ApiException;
 import com.telnyx.sdk.Configuration;
 import com.telnyx.sdk.api.MessagesApi;
 import com.telnyx.sdk.api.NumberOrdersApi;
+import com.telnyx.sdk.api.NumberReservationsApi;
 import com.telnyx.sdk.api.NumberSearchApi;
 import com.telnyx.sdk.auth.HttpBearerAuth;
 import com.telnyx.sdk.model.AvailablePhoneNumber;
 import com.telnyx.sdk.model.CreateMessageRequest;
 import com.telnyx.sdk.model.CreateNumberOrderRequest;
+import com.telnyx.sdk.model.CreateNumberReservationRequest;
 import com.telnyx.sdk.model.InboundMessageEvent;
 import com.telnyx.sdk.model.InboundMessagePayload;
 import com.telnyx.sdk.model.ListAvailablePhoneNumbersResponse;
@@ -18,9 +20,12 @@ import com.telnyx.sdk.model.MessageResponse;
 import com.telnyx.sdk.model.NumberOrder;
 import com.telnyx.sdk.model.NumberOrderEvent;
 import com.telnyx.sdk.model.NumberOrderResponse;
+import com.telnyx.sdk.model.NumberReservation;
+import com.telnyx.sdk.model.NumberReservationResponse;
 import com.telnyx.sdk.model.OutboundMessageEvent;
 import com.telnyx.sdk.model.OutboundMessagePayload;
 import com.telnyx.sdk.model.PhoneNumber;
+import com.telnyx.sdk.model.ReservedPhoneNumber;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +52,9 @@ public class ExampleApplication {
     private final String YOUR_TELNYX_MESSAGING_PROFILE_ID = dotenv.get("TELNYX_MESSAGING_PROFILE_ID");
     private static final String MESSAGING_OUTBOUND_PATH = "/messaging/outbound";
     private static final String MESSAGING_INBOUND_PATH = "/messaging/inbound";
-    private static final String NUMBER_ORDER_PATH = "/numbers/orders";
+    private static final String NUMBER_ORDER_CALLBACK_PATH = "/numbers/orders";
     private static final String NUMBERS_PATH = "/numbers";
+    private static final String RESERVATIONS_PATH = "/reservations";
 
 
     public static void main(String[] args) {
@@ -59,16 +65,45 @@ public class ExampleApplication {
     void configureObjectMapper(final ObjectMapper mapper) {
         mapper.registerModule(new JsonNullableModule());
     }
+
     @GetMapping("/")
     public String hello(){
         return "Hello World";
     }
 
-    @PostMapping(NUMBER_ORDER_PATH)
+    @PostMapping(RESERVATIONS_PATH)
+    public NumberReservation reservationOrder(@RequestBody Map<String,String> allParams){
+        String phoneNumber = allParams.get("phoneNumber");
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://api.telnyx.com/v2");
+
+        // Configure HTTP bearer authorization: bearerAuth
+        HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
+        bearerAuth.setBearerToken(YOUR_TELNYX_API_KEY);
+
+        NumberReservationsApi apiInstance = new NumberReservationsApi(defaultClient);
+        CreateNumberReservationRequest createNumberReservationRequest = new CreateNumberReservationRequest()
+            .addPhoneNumbersItem(new ReservedPhoneNumber().phoneNumber(phoneNumber));
+        try {
+            NumberReservationResponse result = apiInstance.createNumberReservation(createNumberReservationRequest);
+            NumberReservation reservation = result.getData();
+            System.out.println(result);
+            return reservation;
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NumberReservationsApi#createNumberReservation");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+            return new NumberReservation();
+        }
+    }
+
+    @PostMapping(NUMBER_ORDER_CALLBACK_PATH)
     public String numberOrder(@RequestBody NumberOrderEvent numberOrderEvent) {
         NumberOrder numberOrder = numberOrderEvent.getData().getPayload();
         numberOrder.getPhoneNumbers().forEach(System.out::println);
-        return "";
+        return numberOrder.getPhoneNumbers().get(0).getId().toString();
     }
 
     @GetMapping(NUMBERS_PATH)
